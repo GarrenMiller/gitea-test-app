@@ -14,15 +14,15 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Toolchain info
-        shell: powershell
+        shell: cmd
         run: |
-          Get-Command msbuild | Format-List
+          where msbuild
           msbuild -version
 
       - name: Build Release
-        shell: powershell
+        shell: cmd
         run: msbuild HelloNet48\HelloNet48.csproj /p:Configuration=Release /p:Platform=AnyCPU /m
 
       - name: Verify output
-        shell: powershell
-        run: Get-ChildItem -Recurse HelloNet48\bin\Release
+        shell: cmd
+        run: dir HelloNet48\bin\Release
