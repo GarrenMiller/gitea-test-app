@@ -18,6 +18,8 @@ jobs:
         run: |
           echo GITHUB_WORKSPACE=%GITHUB_WORKSPACE%
           cd
+          dir /a "%GITHUB_WORKSPACE%"
+          git -C "%GITHUB_WORKSPACE%" ls-files
           where msbuild
           msbuild -version
 
