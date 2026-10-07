@@ -3,11 +3,13 @@ name: build-net48
 on:
   push:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows
-    env:
-      GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+    if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,12 +27,8 @@ jobs:
         shell: cmd
         run: dir "%GITHUB_WORKSPACE%\HelloNet48\bin\Release"
 
-      - name: Env probe
+      - name: Create release
         shell: cmd
-        run: |
-          echo SERVER=%GITHUB_SERVER_URL%
-          echo API=%GITHUB_API_URL%
-          echo REPO=%GITHUB_REPOSITORY%
-          echo SHA=%GITHUB_SHA%
-          echo RUN=%GITHUB_RUN_NUMBER%
-          if defined GITEA_TOKEN (echo TOKEN=set) else (echo TOKEN=unset)
+        env:
+          GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File "%GITHUB_WORKSPACE%\scripts\create-release.ps1"
