@@ -16,13 +16,15 @@ jobs:
       - name: Toolchain info
         shell: cmd
         run: |
+          echo GITHUB_WORKSPACE=%GITHUB_WORKSPACE%
+          cd
           where msbuild
           msbuild -version
 
       - name: Build Release
         shell: cmd
-        run: msbuild HelloNet48\HelloNet48.csproj /p:Configuration=Release /p:Platform=AnyCPU /m
+        run: msbuild "%GITHUB_WORKSPACE%\HelloNet48\HelloNet48.csproj" /p:Configuration=Release /p:Platform=AnyCPU /m
 
       - name: Verify output
         shell: cmd
-        run: dir HelloNet48\bin\Release
+        run: dir "%GITHUB_WORKSPACE%\HelloNet48\bin\Release"
