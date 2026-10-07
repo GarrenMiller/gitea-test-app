@@ -1,10 +1,28 @@
-name: mirror-ci-test
+name: build-net48
+
 on:
   push:
+
 jobs:
-  hello:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows
     steps:
-      - run: echo "mirror sync triggered CI for ${{ github.sha }} at $(date -u)"
-      - uses: actions/checkout@v4
-      - run: ls -la
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Toolchain info
+        shell: powershell
+        run: |
+          Get-Command msbuild | Format-List
+          msbuild -version
+
+      - name: Build Release
+        shell: powershell
+        run: msbuild HelloNet48\HelloNet48.csproj /p:Configuration=Release /p:Platform=AnyCPU /m
+
+      - name: Verify output
+        shell: powershell
+        run: Get-ChildItem -Recurse HelloNet48\bin\Release
