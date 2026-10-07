@@ -8,6 +8,7 @@ namespace HelloNet48
         {
             Console.WriteLine("Hello from .NET Framework 4.8!");
             Console.WriteLine("CLR runtime version: {0}", Environment.Version);
+            Console.writeLine("I was pushed via GitHub, synced to Gitea, then built");
         }
     }
 }
