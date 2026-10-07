@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: windows
+    env:
+      GITEA_TOKEN: ${{ secrets.GITEA_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,3 +24,13 @@ jobs:
       - name: Verify output
         shell: cmd
         run: dir "%GITHUB_WORKSPACE%\HelloNet48\bin\Release"
+
+      - name: Env probe
+        shell: cmd
+        run: |
+          echo SERVER=%GITHUB_SERVER_URL%
+          echo API=%GITHUB_API_URL%
+          echo REPO=%GITHUB_REPOSITORY%
+          echo SHA=%GITHUB_SHA%
+          echo RUN=%GITHUB_RUN_NUMBER%
+          if defined GITEA_TOKEN (echo TOKEN=set) else (echo TOKEN=unset)
